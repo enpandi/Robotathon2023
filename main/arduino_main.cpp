@@ -84,6 +84,7 @@ void onDisconnectedGamepad(GamepadPtr gp) {
 Servo servo;
 ESP32SharpIR sensor1( ESP32SharpIR::GP2Y0A21YK0F, 27);
 QTRSensors qtr;
+constexpr uint8_t LED_PIN = 2;
 
 // Arduino setup function. Runs in CPU 1
 void setup() {
@@ -118,6 +119,8 @@ void setup() {
     //     delay(20);
     // }
     // qtr.calibrate();
+
+    pinMode(LED_PIN, OUTPUT);
 }
 
 // Arduino loop function. Runs in CPU 1
@@ -178,4 +181,6 @@ void loop() {
     // }
     vTaskDelay(1);
     // delay(100);
+
+    digitalWrite(LED_PIN, millis() / 1000 & 1);
 }
