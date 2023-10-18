@@ -98,14 +98,14 @@ void setup() {
     // Calling "forgetBluetoothKeys" in setup() just as an example.
     // Forgetting Bluetooth keys prevents "paired" gamepads to reconnect.
     // But might also fix some connection / re-connection issues.
-    BP32.forgetBluetoothKeys();
+    // BP32.forgetBluetoothKeys();
 
     ESP32PWM::allocateTimer(0);
 	ESP32PWM::allocateTimer(1);
 	ESP32PWM::allocateTimer(2);
 	ESP32PWM::allocateTimer(3);
     servo.setPeriodHertz(50);
-    servo.attach(12, 1000, 2000);
+    servo.attach(13, 1000, 2000);
 
     // Serial.begin(115200);
     // sensor1.setFilterRate(0.1f);
@@ -143,6 +143,7 @@ void loop() {
             // Another way to query the buttons, is by calling buttons(), or
             // miscButtons() which return a bitmask.
             // Some gamepads also have DPAD, axis and more.
+            Console.printf("servo.write %.3f\n", ((((float) myGamepad->axisY()) / 512.0f) * 500) + 1500 );
             // Console.printf(
             //     "idx=%d, dpad: 0x%02x, buttons: 0x%04x, axis L: %4d, %4d, axis R: %4d, "
             //     "%4d, brake: %4d, throttle: %4d, misc: 0x%02x\n",
