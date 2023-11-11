@@ -6,7 +6,7 @@
 
 namespace robotathon::shoot {
 
-constexpr int PIN = 22;
+constexpr int PIN = 33;
 constexpr int MIN = 1000;
 constexpr int MAX = 2000;
 Servo servo;

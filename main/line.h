@@ -20,7 +20,7 @@ namespace robotathon::line
     QTRSensors qtr;
 
     void calibrate()
-    {
+    {return;
         static constexpr int CALIBRATION_ITERATIONS = 100;
         qtr.resetCalibration();
         Serial.print("calibrating reflectance sensor ");
@@ -35,7 +35,7 @@ namespace robotathon::line
     }
 
     void setup()
-    {
+    {return;
         qtr.setTypeAnalog();
         qtr.setSensorPins(PINS, 8);
     }
@@ -81,7 +81,7 @@ namespace robotathon::line
     }
 
     void loop()
-    {
+    {return;
         uint16_t sensors[NUM_SENSORS];
         // qtr.readCalibrated(sensors);
         float suggestion = qtr.readLineBlack(sensors) / ((NUM_SENSORS - 1) * 500.0f) - 1.0f;
