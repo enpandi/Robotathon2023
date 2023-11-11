@@ -28,6 +28,9 @@ public:
 };
 
 struct {
+    Parameter lineKp{"line Kp",   0.05f, 0.0f, 0.14f, 0.001f};
+    Parameter lineKi{"line Ki", 0.0008f, 0.0f, 0.001f, 0.00001f};
+    Parameter lineKd{"line Kd",    0.7f, 0.0f, 1.2f, 0.01f};
     Parameter servoLOffset{"servoL offset", 0.067f, -1.0f, +1.0f, 0.01f};
     Parameter servoROffset{"servoR offset", -0.236f, -1.0f, +1.0f, 0.01f};
     Parameter servoLMultiplier{"servoL multiplier", 0.568109f, +0.01f, +1.0f, 0.01f};
@@ -38,16 +41,16 @@ int index{};
 bool tuning{};
 
 #define VALUES reinterpret_cast<Parameter*>(&params)
-void left() { if (tuning) { VALUES[index].left(); } }
-void right() { if (tuning) { VALUES[index].right(); } }
-void up() { if (tuning) { VALUES[index].up(); } }
-void down() { if (tuning) { VALUES[index].down(); } }
 void print() { VALUES[index].print(); }
+void left() { if (tuning) { VALUES[index].left(); print(); } }
+void right() { if (tuning) { VALUES[index].right(); print(); } }
+void up() { if (tuning) { VALUES[index].up(); print(); } }
+void down() { if (tuning) { VALUES[index].down(); print(); } }
 #undef VALUES
 
 void prev() { if (tuning) { --index; index += NUM_PARAMS; index %= NUM_PARAMS; } }
 void next() { if (tuning) { ++index; index %= NUM_PARAMS; } }
 void enable() { tuning = true; print(); }
-void disable() { tuning = false; }
+void disable() { tuning = false; print(); }
 
 }

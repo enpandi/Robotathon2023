@@ -42,10 +42,10 @@ void setup() {
 
     controller::setup();
     drive::setup();
-    wall::setup();
+    // wall::setup();
     line::setup();
-    color::setup();
-    led::setup();
+    // color::setup();
+    // led::setup();
 
     controller::dl.onUpDown = tuner::left;
     controller::dr.onUpDown = tuner::right;
@@ -58,6 +58,7 @@ void setup() {
     controller::a.onUpDown = line::calibrate;
     controller::x.onUpDown = color::resetReading;
     controller::x.onDown = color::read;
+    controller::zr.onDown = line::loop;
 
     Serial.begin(115200);
     // Serial.printf("aaaaaaaaaaaaa %d %d\n", SOC_ADC_PERIPH_NUM, SOC_ADC_MAX_CHANNEL_NUM);
@@ -70,11 +71,12 @@ void setup() {
 
 // Arduino loop function. Runs in CPU 1
 void loop() {
+    drive::l = drive::r = 0.0f;
     controller::loop();
     drive::loop();
-    wall::loop();
+    // wall::loop();
     // line::loop();
-    led::loop();
+    // led::loop();
     vTaskDelay(1);
     // delay(100);
 }

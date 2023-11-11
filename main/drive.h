@@ -11,6 +11,7 @@ constexpr int PIN_R = 13;
 constexpr int MIN = 1000;
 constexpr int MAX = 2000;
 Servo servoL, servoR;
+float l{}, r{};
 
 void setup() {
     servoL.setPeriodHertz(50);
@@ -24,10 +25,9 @@ int toPulseWidth(float x) {
 }
 
 void loop() {
-    float l = controller::ly * tuner::params.servoLMultiplier + tuner::params.servoLOffset;
-    float r = controller::ry * tuner::params.servoRMultiplier + tuner::params.servoROffset;
-    servoL.write(toPulseWidth(l));
-    servoR.write(toPulseWidth(r));
+    // Serial.printf("%.2f %.2f\n", l, r);
+    servoL.write(toPulseWidth(l * tuner::params.servoLMultiplier + tuner::params.servoLOffset));
+    servoR.write(toPulseWidth(r * tuner::params.servoRMultiplier + tuner::params.servoROffset));
 }
 
 }
