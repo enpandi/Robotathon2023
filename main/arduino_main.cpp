@@ -23,15 +23,22 @@ limitations under the License.
 #include "controller.h"
 #include "tuner.h"
 #include "drive.h"
+#include "shoot.h"
 #include "wall.h"
-#include "line.h"
 #include "color.h"
+#include "line.h"
 using namespace robotathon;
 
 #include <Arduino.h>
 
-// #include <Arduino.h>//
-// extern const int adc_channel_io_map[SOC_ADC_PERIPH_NUM][SOC_ADC_MAX_CHANNEL_NUM];//
+using Function = void (*)();
+Function modeLoop{drive::loop};
+
+void driveMode() { Serial.println("DRIVE"); modeLoop = drive::loop; }
+void shootMode() { Serial.println("SHOOT"); modeLoop = shoot::loop; }
+void wallMode() { Serial.println("WALL"); modeLoop = wall::loop; }
+void colorMode() { Serial.println("COLOR"); modeLoop = color::loop; color::start(); }
+void lineMode() { Serial.println("LINE"); modeLoop =  line::loop; }
 
 // Arduino setup function. Runs in CPU 1
 void setup() {
@@ -42,10 +49,10 @@ void setup() {
 
     controller::setup();
     drive::setup();
-    // wall::setup();
+    wall::setup();
+    color::setup();
     line::setup();
-    // color::setup();
-    // led::setup();
+    led::setup();
 
     controller::dl.onUpDown = tuner::left;
     controller::dr.onUpDown = tuner::right;
@@ -55,10 +62,19 @@ void setup() {
     controller::l.onUpDown = tuner::prev;
     controller::zl.onUpDown = tuner::enable;
     controller::zl.onDownUp = tuner::disable;
-    controller::a.onUpDown = line::calibrate;
-    controller::x.onUpDown = color::resetReading;
-    controller::x.onDown = color::read;
-    controller::zr.onDown = line::loop;
+
+    controller::zr.onUpDown = driveMode;
+    controller::x.onUpDown = shootMode;
+    controller::y.onUpDown = wallMode;
+    controller::a.onUpDown = colorMode;
+    controller::b.onUpDown = lineMode;
+    controller::h.onUpDown = line::calibrate;
+    // controller::a.onUpDown = line::calibrate;
+    // controller::x.onUpDown = color::resetReading;
+    // controller::x.onDown = color::read;
+    // controller::zr.onDown = line::loop;
+    
+
 
     Serial.begin(115200);
     // Serial.printf("aaaaaaaaaaaaa %d %d\n", SOC_ADC_PERIPH_NUM, SOC_ADC_MAX_CHANNEL_NUM);
@@ -73,10 +89,14 @@ void setup() {
 void loop() {
     drive::l = drive::r = 0.0f;
     controller::loop();
-    drive::loop();
+    modeLoop();
+    // drive::loop();
     // wall::loop();
+    // color::loop();
     // line::loop();
-    // led::loop();
+    led::loop();
+    drive::servoL.write(drive::toPulseWidth(drive::l * tuner::params.servoLMultiplier + tuner::params.servoLOffset));
+    drive::servoR.write(drive::toPulseWidth(drive::r * tuner::params.servoRMultiplier + tuner::params.servoROffset));
     vTaskDelay(1);
     // delay(100);
 }

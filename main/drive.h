@@ -25,9 +25,11 @@ int toPulseWidth(float x) {
 }
 
 void loop() {
-    // Serial.printf("%.2f %.2f\n", l, r);
-    servoL.write(toPulseWidth(l * tuner::params.servoLMultiplier + tuner::params.servoLOffset));
-    servoR.write(toPulseWidth(r * tuner::params.servoRMultiplier + tuner::params.servoROffset));
+    drive::l = controller::ly;
+    drive::r = controller::ry;
+    // Serial.printf("l=%.2f r=%.2f\n", l, r);
+    // servoL.write(toPulseWidth(controller::ly * tuner::params.servoLMultiplier + tuner::params.servoLOffset));
+    // servoR.write(toPulseWidth(controller::ry * tuner::params.servoRMultiplier + tuner::params.servoROffset));
 }
 
 }

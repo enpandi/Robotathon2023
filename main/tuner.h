@@ -28,9 +28,16 @@ public:
 };
 
 struct {
+    Parameter servoSOffset{"servoS offset", 0.0f, -1.0f, +1.0f, 0.01f};
+    Parameter servoSMultiplier{"servoS multiplier", 0.0f, +0.01f, +1.0f, 0.01f};
+    Parameter lineThreshold{"line threshold", 0.10f, 0.01f, 0.001f, 0.5f};
+    Parameter turnSpeed{"turn speed", 0.5f, 0.01f, 0.75f, 0.01f};
+    Parameter wallThreshold{"wall threshold", 8.00f, 0.0f, 20.0f, 0.1f};
+    Parameter shooterSpeed{"shooter speed", 1.0f, 1.0f, 0.1f, 0.01f};
+    Parameter colorSpeed{"color speed",   0.25f, 0.01f, 1.0f, 0.1f};
     Parameter lineKp{"line Kp",   0.05f, 0.0f, 0.14f, 0.001f};
-    Parameter lineKi{"line Ki", 0.0008f, 0.0f, 0.001f, 0.00001f};
-    Parameter lineKd{"line Kd",    0.7f, 0.0f, 1.2f, 0.01f};
+    Parameter lineKi{"line Ki", 0.00001f, 0.0f, 0.001f, 0.00001f};
+    Parameter lineKd{"line Kd",    0.6f, 0.0f, 1.2f, 0.01f};
     Parameter servoLOffset{"servoL offset", 0.067f, -1.0f, +1.0f, 0.01f};
     Parameter servoROffset{"servoR offset", -0.236f, -1.0f, +1.0f, 0.01f};
     Parameter servoLMultiplier{"servoL multiplier", 0.568109f, +0.01f, +1.0f, 0.01f};

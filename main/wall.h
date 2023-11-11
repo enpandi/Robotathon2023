@@ -4,23 +4,30 @@
 
 namespace robotathon::wall {
 
-constexpr uint8_t PINS[3] = {12, 14, 27}; // orange, yellow, green
-ESP32SharpIR irO{ESP32SharpIR::GP2Y0A21YK0F, PINS[0]};
-ESP32SharpIR irY{ESP32SharpIR::GP2Y0A21YK0F, PINS[1]};
-ESP32SharpIR irG{ESP32SharpIR::GP2Y0A21YK0F, PINS[2]};
+constexpr uint8_t PIN_L = 12;
+constexpr uint8_t PIN_R = 14;
+ESP32SharpIR irL{ESP32SharpIR::GP2Y0A21YK0F, PIN_L};
+// ESP32SharpIR irY{ESP32SharpIR::GP2Y0A21YK0F, PINS[1]};
+ESP32SharpIR irR{ESP32SharpIR::GP2Y0A21YK0F, PIN_R};
 // todo rename them not based on the wire color
 
 void setup() {
-    irO.setFilterRate(0.1f);
-    irY.setFilterRate(0.1f);
-    irG.setFilterRate(0.1f);
+    irL.setFilterRate(0.1f);
+    irR.setFilterRate(0.1f);
 }
 
 void loop() {
-    float distO = 0.0;//irO.getDistanceFloat();
-    float distY = 0.0;//irY.getDistanceFloat();
-    float distG = irG.getDistanceFloat();
-    Serial.printf("%.2f %.2f %.2f", distO, distY, distG);
+    float l = irL.getDistanceFloat();
+    float r = irR.getDistanceFloat();
+    Serial.printf("l r %.2f %.2f\n", l, r);
+    float suggestion = r - l;
+    if (-tuner::params.wallThreshold < suggestion && suggestion < tuner::params.wallThreshold) {
+        drive::l = drive::r = 1.0f;
+    } else {
+        drive::l = drive::r = tuner::params.turnSpeed;
+        if (suggestion < 0) drive::l = -drive::l;
+        else drive::r = -drive::r;
+    }
 }
 
 }

@@ -6,15 +6,15 @@
 
 namespace robotathon::shoot {
 
-constexpr int PIN = 4;
+constexpr int PIN = 22;
 constexpr int MIN = 1000;
 constexpr int MAX = 2000;
 Servo servo;
 int dir;
 
 void setup() {
-    servoL.setPeriodHertz(50);
-    servoR.attach(PIN, MIN, MAX);
+    servo.setPeriodHertz(50);
+    servo.attach(PIN, MIN, MAX);
 }
 
 int toPulseWidth(float x) {
@@ -22,7 +22,8 @@ int toPulseWidth(float x) {
 }
 
 void loop() {    // Serial.printf("%.2f %.2f\n", l, r);
-    servo.write(toPulseWidth(dir * tuner::shooterSpeed * tuner::params.servoLMultiplier + tuner::params.servoLOffset));
+    Serial.printf("shoot %d\n", toPulseWidth(controller::ly * tuner::params.shooterSpeed * tuner::params.servoSMultiplier + tuner::params.servoSOffset));
+    servo.write(toPulseWidth(controller::ly * tuner::params.shooterSpeed * tuner::params.servoSMultiplier + tuner::params.servoSOffset));
 }
 
 }
